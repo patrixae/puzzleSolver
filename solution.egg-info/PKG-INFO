@@ -1,0 +1,158 @@
+Metadata-Version: 2.4
+Name: solution
+Version: 0.0.1
+Maintainer: solution-team
+Maintainer-email: solution@gitlab.lrz.de
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: tabulate==0.9.0
+Requires-Dist: numpy==2.2.4
+Requires-Dist: opencv-contrib-python-headless==4.11.0.86
+Requires-Dist: matplotlib==3.10.1
+Requires-Dist: frechetdist==0.6
+Requires-Dist: websockets==15.0.1
+Requires-Dist: torch==2.7.0
+Requires-Dist: munkres==1.1.4
+Provides-Extra: dev
+Requires-Dist: black==25.1.0; extra == "dev"
+Requires-Dist: mypy==1.15.0; extra == "dev"
+Requires-Dist: pylint==3.3.6; extra == "dev"
+Requires-Dist: pytest==8.3.5; extra == "dev"
+Requires-Dist: pytest-benchmark==4.0.0; extra == "dev"
+Requires-Dist: networkx==3.4.2; extra == "dev"
+Requires-Dist: pygraphviz==1.14; extra == "dev"
+Requires-Dist: types-tabulate==0.9.0; extra == "dev"
+Requires-Dist: rclpy-intellisense==1.2.0; extra == "dev"
+Requires-Dist: pandas==2.2.3; extra == "dev"
+Requires-Dist: plotly==6.1.1; extra == "dev"
+Requires-Dist: cv-bridge==1.13.0.post0; extra == "dev"
+Dynamic: maintainer
+Dynamic: maintainer-email
+
+# Lösung
+
+![Python: 3.12](https://img.shields.io/badge/python-3.12-yellow)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Typing: mypy](https://img.shields.io/badge/typing-mypy-yellowgreen)](https://github.com/python/mypy)
+[![Linter: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
+
+## Install dependencies
+
+With `make prepare`, the necessary pip dependencies are installed.
+
+## Install dev dependencies
+
+With `make prepare-dev`, the necessary pip dependencies for development are installed.
+
+Additionally following (non python) packages are needed for `pygraphviz (package name is for debian systems):
+
+- `gcc`
+- `libc-dev`
+- `graphviz`
+- `graphviz-dev`
+- `python3.12-dev`
+
+## Formatter
+
+We use the [`black`](https://github.com/psf/black) formatter.
+
+Installation:
+
+```bash
+pip install black
+```
+
+Run:
+
+```bash
+make format
+```
+
+## Typing check
+
+We use [`mypy`](https://github.com/python/mypy) for checking typing.
+
+Installation:
+
+```bash
+pip install mypy
+```
+
+Run:
+
+```bash
+make typing
+```
+
+## Linting
+
+We user [`pylint`](https://github.com/pylint-dev/pylint) for linting.
+
+Installation:
+
+```bash
+pip install pylint
+```
+
+Run:
+
+```bash
+make linting
+```
+
+## Checking everything
+
+All static checks can be run at once with:
+
+```bash
+make check
+```
+
+## Tests
+
+All tests in the `./test` folder can be run with:
+
+```bash
+make test
+```
+
+## Rosbag
+
+In order to use the rosbag container you need:
+
+- image: gitlab.lrz.de:5005/robotikss25/loesung/rosbag
+- volume: folder where the ros bags will be saved (rosbag/bags)
+- command: record | play
+- arguments: bag-name topics | bag-name
+
+Rosbag container could be run with:
+
+```bash
+docker run -it -v ./rosbag/bags:/ros2/bags gitlab.lrz.de:5005/robotikss25/loesung/rosbag record bag-name /test/topic1 /test/topic2
+docker run -it -v ./rosbag/bags:/ros2/bags gitlab.lrz.de:5005/robotikss25/loesung/rosbag play bag-name
+```
+
+
+## Solver Debug Visualization
+
+The solver currently offers two types of visualization.
+
+### Command Line Visualization of the Puzzle Context
+
+This prints the current piece ids stored in the puzzle context to the CLI.
+
+Activate with:
+
+```sh
+export SOLVER_VISUALIZE="ON"
+```
+
+### Graphical Representation including Images
+
+This visualizes the Puzzle Context including the images of the placed puzzle pieces using matplotlib.
+
+Activate with:
+
+```sh
+export SOLVER_VISUALIZE_GUI="ON"
+```
