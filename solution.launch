@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Launch arguments -->
+    <arg name="node_name" default="puzzle_solver" description="Name of the node."/>
+    <arg name="output" default="screen" description="Output destination for node logs (screen, log, both)."/>
+
+    <!-- Puzzle Solution Node -->
+    <node pkg="puzzle_solver"
+          exec="main"
+          name="$(var node_name)"
+          output="$(var output)">
+    </node>
+</launch>

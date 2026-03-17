@@ -1,0 +1,35 @@
+ARG ROS_DISTRO=jazzy
+
+FROM ros:${ROS_DISTRO}
+ENV ROS_DISTRO=${ROS_DISTRO}
+
+WORKDIR /ros2
+
+# Key singing workaround
+RUN rm -f /etc/apt/sources.list.d/ros2-latest.list \
+  && rm -f /usr/share/keyrings/ros2-latest-archive-keyring.gpg
+
+RUN apt-get update \
+  && apt-get install -y ca-certificates curl
+
+RUN export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}') ;\
+    curl -L -s -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo $VERSION_CODENAME)_all.deb" \
+    && apt-get update \
+    && apt-get install /tmp/ros2-apt-source.deb \
+    && rm -f /tmp/ros2-apt-source.deb
+
+# Install rosbag2 CLI
+RUN apt-get update && apt-get install -y bash && apt-get install -y ros-${ROS_DISTRO}-ros2bag \
+    && rm -rf /var/lib/apt/lists/*
+
+# build overlay source
+COPY robotikss25/robotik_interfaces/ /ros2/robotik_interfaces
+RUN /bin/bash -c "source /opt/ros/$ROS_DISTRO/setup.sh && colcon build --packages-select robotik_interfaces"
+
+ENV ROS_DOMAIN_ID=0
+
+# Copy the entrypoint script
+COPY rosbag/record_or_play.sh /ros2/record_or_play.sh
+RUN chmod +x /ros2/record_or_play.sh
+
+ENTRYPOINT ["/ros2/record_or_play.sh"]

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>puzzle_solver</name>
+  <version>0.1.0</version>
+  <description>Solution node</description>
+  <maintainer email="solution@gitlab.lrz.de">solution-team</maintainer>
+  <license>MIT</license>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>cv_bridge</exec_depend>
+  <exec_depend>python3-tabulate</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>python3-websockets</exec_depend>
+  <exec_depend>python3-opencv</exec_depend>
+  <exec_depend>python3-matplotlib</exec_depend>
+  <exec_depend>python3-munkres</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+
+</package>
